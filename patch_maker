@@ -1,0 +1,45 @@
+#!/bin/bash
+# Author Lct19279416
+patch="patch"
+separator="/"
+modi=$1
+common=$2
+if [ -z "$common" ]
+then
+ echo "缺少第二个参数！！！"
+else
+if [ ! -d "/patch/" ]
+ then
+ echo $modi
+ mkdir $patch
+else
+ echo "patch folder exist!!!"
+fi
+
+while read line
+do
+
+ if [[ $line == *$common* ]]
+ then
+  echo "包含 $common"
+
+  tempPath=${line#*$common}
+  #echo "tempPath = $tempPath"
+
+  tempPath1=${common}${separator}${tempPath}
+  #echo "tempPath1 = $tempPath1"
+
+  tempPath2=${tempPath1%$separator*}
+  #echo "tempPath2 = $tempPath2"
+
+  cd $patch
+  mkdir -p $tempPath2
+  cp -f $line ./$tempPath2/
+  cd ../
+ else
+  echo "不包含 $common"
+ fi
+done < $modi
+echo "Success!!!"
+fi
+
